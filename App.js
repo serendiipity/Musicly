@@ -47,13 +47,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16
+    padding: 16,
   },
   input: {
     width: '100%',
     borderColor: '#ccc',
     borderWidth: 1,
     padding: 8,
-    marginBottom: 16
+    marginBottom: 16,
   }
 });
