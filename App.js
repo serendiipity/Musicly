@@ -19,6 +19,7 @@ export default function App() {
       });
       const data = await response.json();
       setRoomCode(data.roomId);
+      setJoined(true);
       setIsHosting(true);
     } catch (error) {
       console.error(error);
@@ -34,6 +35,7 @@ export default function App() {
         },
         body: JSON.stringify({ roomId: roomCode, userId: hostUserId })
       });
+      setJoined(true);
       setIsHosting(false);
     } catch (error) {
       console.error(error);
@@ -44,7 +46,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Musicly Yours</Text>
-      {!joined? (
+      {!joined ? (
         <View>
           {isHosting === null && (
             <View>
