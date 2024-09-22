@@ -24,7 +24,18 @@ export default function App() {
   };
 
   const joinRoom = async () => {
-
+    try {
+      await fetch('http://localhost:3000/joinRoom', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ roomId: roomCode, userId: hostUserId })
+      });
+      setIsHosting(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
 
