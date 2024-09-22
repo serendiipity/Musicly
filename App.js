@@ -10,7 +10,7 @@ export default function App() {
 
   const createRoom = async () => {
     try {
-      const response = await fetch('http://localhost:3000/createRoom', {
+      const response = await fetch('http://localhost:8081/createRoom', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -28,7 +28,7 @@ export default function App() {
 
   const joinRoom = async () => {
     try {
-      await fetch('http://localhost:3000/joinRoom', {
+      await fetch('http://localhost:8081/joinRoom', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
