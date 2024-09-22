@@ -4,7 +4,7 @@ import { StyleSheet, Text, View , TextInput, Button } from 'react-native';
 export default function App() {
   const [hostUserId, setHostUserId] = useState('');
   const [roomCode, setRoomCode] = useState('');
-  const [isHost, setIsHost] = useState(false);
+  const [isHosting, setIsHosting] = useState(null);
 
   const createRoom = async () => {
     try {
@@ -31,26 +31,36 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Musicly Yours</Text>
-      <TextInput
-        style ={styles.input}
-        placeholder="Enter User ID"
-        value={hostUserId}
-        onChangeText={setHostUserId}
-      />
-      {roomCode ? (
-        <Room roomCode={roomCode} isHost={isHost} hostUserId={hostUserId} />
-      ) : (
+      {isHosting === null && (
         <View>
-          <Button title="Create Room" onPress={createRoom} />
+          <Button title="Host Room" onPress={() => setIsHosting(true)} />
+          <Button title="Join Room" onPress={() => setIsHosting(false)} />
+        </View>
+      )}
+      {isHosting === true && (
+        <View>
           <TextInput
             style={styles.input}
-            placeholder="Room Code"
+            placeholder="Enter User ID"
+            value={hostUserId}
+            onChangeText={setHostUserId}
+          />
+          <Button title="Create Room" onPress={createRoom} />
+          {roomCode && <Text>Room Code: {roomCode}</Text>}
+        </View>
+      )}
+      {isHosting === false && (
+        <View>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Room Code"
             value={roomCode}
             onChangeText={setRoomCode}
           />
           <Button title="Join Room" onPress={joinRoom} />
         </View>
       )}
+      {roomCode && !isHosting && <Room roomCode={roomCode} isHosting={false} hostUserId={hostUserId} />}
     </View>
   );
 }
