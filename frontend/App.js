@@ -10,13 +10,14 @@ export default function App() {
 
   const createRoom = async () => {
     try {
-      const response = await fetch('http://localhost:8081/createRoom', {
+      const response = await fetch('http://localhost:3000/createRoom', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ hostUserId })
       });
+
       const data = await response.json();
       setRoomCode(data.roomId);
       setJoined(true);
@@ -28,7 +29,7 @@ export default function App() {
 
   const joinRoom = async () => {
     try {
-      await fetch('http://localhost:8081/joinRoom', {
+      await fetch('http://localhost:3000/joinRoom', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
