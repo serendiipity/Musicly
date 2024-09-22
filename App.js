@@ -17,7 +17,7 @@ export default function App() {
       });
       const data = await response.json();
       setRoomCode(data.roomId);
-      setIsHost(true);
+      setIsHosting(true);
     } catch (error) {
       console.error(error);
     }
