@@ -7,7 +7,20 @@ export default function App() {
   const [isHost, setIsHost] = useState(false);
 
   const createRoom = async () => {
-
+    try {
+      const response = await fetch('http://localhost:3000/createRoom', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ hostUserId })
+      });
+      const data = await response.json();
+      setRoomCode(data.roomId);
+      setIsHost(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const joinRoom = async () => {
