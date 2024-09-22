@@ -8,7 +8,7 @@ const Room = ({ roomCode, isHosting, hoserUserId }) => {
 			{isHosting ? (
 				<Text>You are hosting the room as {hostUserId}.</Text>
 			) : (
-				<Text>You are joining the room as hostUderId}.</Text>
+				<Text>You are joining the room as {hostUserId}.</Text>
 			)}
 		</View>
 	);	
