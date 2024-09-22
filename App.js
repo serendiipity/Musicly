@@ -22,7 +22,7 @@ export default function App() {
         style ={styles.input}
         placeholder="Enter User ID"
         value={hostUserId}
-        onChangeText={setHoserUserId}
+        onChangeText={setHostUserId}
       />
       {roomCode ? (
         <Room roomCode={roomCode} isHost={isHost} hostUserId={hostUserId} />
