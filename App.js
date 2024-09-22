@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View , TextInput, Button } from 'react-native';
+import Room from './Room';
 
 export default function App() {
   const [hostUserId, setHostUserId] = useState('');
