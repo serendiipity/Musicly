@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-const Room = ({ roomCode, isHosting, hoserUserId }) => {
+const Room = ({ roomCode, isHosting, hostUserId }) => {
 	return (
 		<View style={styles.container}>
 			<Text>Room Code: {roomCode}</Text>
