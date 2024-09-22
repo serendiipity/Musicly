@@ -5,6 +5,7 @@ export default function App() {
   const [hostUserId, setHostUserId] = useState('');
   const [roomCode, setRoomCode] = useState('');
   const [isHosting, setIsHosting] = useState(null);
+  const [joined, setJoined] = useState(false);
 
   const createRoom = async () => {
     try {
@@ -42,36 +43,41 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Musicly Yours</Text>
-      {isHosting === null && (
+      {!joined? (
         <View>
-          <Button title="Host Room" onPress={() => setIsHosting(true)} />
-          <Button title="Join Room" onPress={() => setIsHosting(false)} />
+          {isHosting === null && (
+            <View>
+              <Button title="Host Room" onPress={() => setIsHosting(true)} />
+              <Button title="Join Room" onPress={() => setIsHosting(false)} />
+            </View>
+          )}
+          {isHosting === true && (
+            <View>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter User ID"
+                value={hostUserId}
+                onChangeText={setHostUserId}
+              />
+              <Button title="Create Room" onPress={createRoom} />
+              {roomCode && <Text>Room Code: {roomCode}</Text>}
+            </View>
+          )}
+          {isHosting === false && (
+            <View>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Room Code"
+                value={roomCode}
+                onChangeText={setRoomCode}
+              />
+              <Button title="Join Room" onPress={joinRoom} />
+            </View>
+          )}
         </View>
+      ) : (
+        <Room roomCode={roomCode} isHosting={false} hostUserId={hostUserId} />
       )}
-      {isHosting === true && (
-        <View>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter User ID"
-            value={hostUserId}
-            onChangeText={setHostUserId}
-          />
-          <Button title="Create Room" onPress={createRoom} />
-          {roomCode && <Text>Room Code: {roomCode}</Text>}
-        </View>
-      )}
-      {isHosting === false && (
-        <View>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter Room Code"
-            value={roomCode}
-            onChangeText={setRoomCode}
-          />
-          <Button title="Join Room" onPress={joinRoom} />
-        </View>
-      )}
-      {roomCode && !isHosting && <Room roomCode={roomCode} isHosting={false} hostUserId={hostUserId} />}
     </View>
   );
 }
