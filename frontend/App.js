@@ -21,7 +21,14 @@ export default function App() {
   };
 
   const signIn = async () => {
-
+    try {
+      const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+      setUser(userCredential.user);
+      setEmail('');
+      setPassword('');
+    } catch (error) {
+        console.error(error);
+    }
   };
 
   return (
