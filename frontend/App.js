@@ -1,86 +1,42 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View , TextInput, Button } from 'react-native';
-import Room from './Room';
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import RoomManager from './RoomManager';
+import { firebase } from './firebaseConfig';
 
 export default function App() {
-  const [hostUserId, setHostUserId] = useState('');
-  const [roomCode, setRoomCode] = useState('');
-  const [isHosting, setIsHosting] = useState(null);
-  const [joined, setJoined] = useState(false);
+  const [user, setUser] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const createRoom = async () => {
+
+  const signUp = async () => {
     try {
-      const response = await fetch('http://localhost:3000/createRoom', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ hostUserId })
-      });
-
-      const data = await response.json();
-      setRoomCode(data.roomId);
-      setJoined(true);
-      setIsHosting(true);
+      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      setUser(userCredential.user);
+      setEmail('');
+      setPassword('');
     } catch (error) {
       console.error(error);
     }
   };
 
-  const joinRoom = async () => {
-    try {
-      await fetch('http://localhost:3000/joinRoom', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ roomId: roomCode, userId: hostUserId })
-      });
-      setJoined(true);
-      setIsHosting(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const signIn = async () => {
 
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Musicly Yours</Text>
-      {!joined ? (
+      {!user ? (
         <View>
-          {isHosting === null && (
-            <View>
-              <Button title="Host Room" onPress={() => setIsHosting(true)} />
-              <Button title="Join Room" onPress={() => setIsHosting(false)} />
-            </View>
-          )}
-          {isHosting === true && (
-            <View>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter User ID"
-                value={hostUserId}
-                onChangeText={setHostUserId}
-              />
-              <Button title="Create Room" onPress={createRoom} />
-              {roomCode && <Text>Room Code: {roomCode}</Text>}
-            </View>
-          )}
-          {isHosting === false && (
-            <View>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter Room Code"
-                value={roomCode}
-                onChangeText={setRoomCode}
-              />
-              <Button title="Join Room" onPress={joinRoom} />
-            </View>
-          )}
+          <Text>Hello world</Text>
+          <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} />
+          <TextInput style={styles.input} placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry/>
+          <Button title="Sign Up" onPress={signUp} />
+          <Button title="Sign In" onPress={signIn} />
         </View>
       ) : (
-        <Room roomCode={roomCode} isHosting={false} hostUserId={hostUserId} />
+        <RoomManager hostUserId={user.uid} />
+
       )}
     </View>
   );
@@ -88,7 +44,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1, 
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
@@ -99,5 +55,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 8,
     marginBottom: 16,
-  }
+  },
 });
