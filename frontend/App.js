@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import RoomManager from './RoomManager';
 import { firebase } from './firebaseConfig';
 
@@ -15,6 +15,7 @@ export default function App() {
       setUser(userCredential.user);
       setEmail('');
       setPassword('');
+      Alert.alert("you have successfully signed up");
     } catch (error) {
       console.error(error);
     }
@@ -23,9 +24,11 @@ export default function App() {
   const signIn = async () => {
     try {
       const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+      
       setUser(userCredential.user);
       setEmail('');
       setPassword('');
+      Alert.alert("you have successfully signed in");
     } catch (error) {
         console.error(error);
     }
