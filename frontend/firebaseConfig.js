@@ -1,5 +1,6 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import 'firebase/compat/firestore'
 
 console.log("file config loaded");
 
@@ -21,4 +22,6 @@ const firebaseConfig = {
     firebase.app();
   }
 
-export { firebase };
+const firestore = firebase.firestore();
+
+export { firebase, firestore };

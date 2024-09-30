@@ -25,7 +25,7 @@ const RoomManager = ({ hostUserId }) => {
 	return (
 		<View>
 			{isCreatingRoom ? (
-				<CreateRoom onBack={handleBack} />
+				<CreateRoom hostUserId={hostUserId} onBack={handleBack} />
 			) : isJoiningRoom ? (
 				<JoinRoom onBack={handleBack} />
 			) : (
