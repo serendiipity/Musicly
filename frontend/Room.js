@@ -1,25 +1,37 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { View, Text, Button, FlatList } from 'react-native';
+import { firestore } from './firebaseConfig';
 
-const Room = ({ roomCode, isHosting, hostUserId }) => {
+const Room = ({ roomId, onLeave }) => {
+	const [playlist, setPlaylist] = React.useState([]);
+
+	React.useEffect(() => {
+		const fetchPlaylist = async () => {
+			const roomRef = firestore.collection('rooms').doc(roomId);
+			const roomDoc = await roomRef.get();
+			if (roomDoc.exists) {
+				setPlaylist(roomDoc.data().playlist || []);
+			}
+		};
+
+		fetchPlaylist();
+	}, [roomId]);
+
+	const renderItem = ({ item }) => (
+		<Text>{item.title}</Text>
+	);
+
 	return (
-		<View style={styles.container}>
-			<Text>Room Code: {roomCode}</Text>
-			{isHosting ? (
-				<Text>You are hosting the room as {hostUserId}.</Text>
-			) : (
-				<Text>You are joining the room as {hostUserId}.</Text>
-			)}
+		<View>
+			<Text>Room ID: {roomId}</Text>
+			<FlatList
+				data={playlist}
+				renderItem={renderItem}
+				keyExtractor={(item) => item.id}
+			/>
+			<Button title="Leave Room" onPress={onLeave} />
 		</View>
-	);	
+	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-});
 
 export default Room;

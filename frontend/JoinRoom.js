@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, Alert, TextInput } from 'react-native';
 import { firestore } from './firebaseConfig';
 
-const JoinRoom = ({ onBack }) => {
+const JoinRoom = ({ onBack, onRoomJoined }) => {
 	const [roomId, setRoomId] = useState('');
 
 	const handleJoinRoom = async () => {
@@ -11,6 +11,7 @@ const JoinRoom = ({ onBack }) => {
 			const roomDoc = await roomRef.get();
 			if (roomDoc.exists) {
 				Alert.alert('success', `you have joined room ${roomId}`);
+				onRoomJoined(roomId);
 			} else {
 				Alert.alert('error', 'room not found');
 			}
