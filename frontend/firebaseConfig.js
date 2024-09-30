@@ -23,5 +23,6 @@ const firebaseConfig = {
   }
 
 const firestore = firebase.firestore();
+const FieldValue = firebase.firestore.FieldValue;
 
-export { firebase, firestore };
+export { firebase, firestore, FieldValue };
