@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Button, FlatList, TextInput, Alert } from 'react-native';
 import { firestore, FieldValue } from './firebaseConfig';
+import SpotifyManager from './SpotifyManager';
 
 const Room = ({ roomId, onLeave }) => {
 	const [playlist, setPlaylist] = React.useState([]);
@@ -18,13 +19,7 @@ const Room = ({ roomId, onLeave }) => {
 		fetchPlaylist();
 	}, [roomId]);
 
-	const addSongToPlaylist = async () => {
-		if (!songInput) {
-			Alert.alert('error', 'please enter a song title');
-			return;
-		}
-
-		const newSong = {title: songInput, id: Date.now().toString() };
+	const addSongToPlaylist = async (newSong) => {
 		const roomRef = firestore.collection('rooms').doc(roomId);
 
 		try {
@@ -32,7 +27,6 @@ const Room = ({ roomId, onLeave }) => {
 				playlist: FieldValue.arrayUnion(newSong),
 			});
 			setPlaylist((prev) => [...prev, newSong]);
-			setSongInput('');
 		} catch (error) {
 			Alert.alert('error', `unable to add song ${error.message}`);
 		}
@@ -50,13 +44,7 @@ const Room = ({ roomId, onLeave }) => {
 				renderItem={renderItem}
 				keyExtractor={(item) => item.id}
 			/>
-			<TextInput
-				placeholder="Enter song title"
-				value={songInput}
-				onChangeText={setSongInput}
-				style={{ borderWidth: 1, marginBottom: 10, padding: 5 }}
-			/>
-			<Button title="Add song" onPress={addSongToPlaylist} />
+			<SpotifyManager onSongAdded={addSongToPlaylist} />
 			<Button title="Leave Room" onPress={onLeave} />
 		</View>
 	);
